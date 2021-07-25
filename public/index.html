@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <form action="" id="frmMsj">
+        <input type="text" id="inputMsj">
+        <button>Enviar</button>
+    </form>
+
+
+    <ul id="idMsj">
+
+    </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"
+        integrity="sha512-PU5S6BA03fRv1Q5fpwXjg5nlRrgdoguZ74urFInkbABMCENyx5oP3hrDzYMMPh3qdLdknIvrGj3yqZ4JuU7Nag=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const socket = io('http://localhost:3000')  // https://cs-socket-server.herokuapp.com/
+        const frm = document.querySelector('#frmMsj')
+        const idMsj = document.querySelector('#idMsj')
+        const inputMsj = document.querySelector('#inputMsj')
+        socket.on('primer-socket', (data) => {
+            console.log(data);
+        });
+
+        frm.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+
+            const msj = inputMsj.value;
+            console.log(msj)
+
+            socket.emit('msj-input-server', { txt: msj })
+
+        });
+
+        socket.on('msj-output-client', (data) => {
+            console.log(data);
+            idMsj.innerHTML += `<li>${data.txt}</li>`;
+        });
+
+    </script>
+
+</body>
+
+<footer>
+
+</footer>
+
+</html>
