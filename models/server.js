@@ -19,7 +19,6 @@ class Server {
     middlewares() {
         this.app.use(express.static(path.resolve(__dirname, '../public')));    
         this.app.use(cors({
-            origin: 'http://localhost:8080',
             methods: ["GET", "POST"]
         }));
     }
