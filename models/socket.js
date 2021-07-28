@@ -4,6 +4,7 @@ class Sockets {
         this.io = io;
 
         this.socketEvents();
+        this.usersArray=[]
     }
 
     socketEvents() {
@@ -18,11 +19,12 @@ class Sockets {
 
             //recibimos un evento
             client.on('datos_user', datos => {
+                this.usersArray.push(datos.usuario)
             console.log('correo: '+datos.mail + '  usuario: '+ datos.usuario);
             
             //eel servidor emite algo al cliente, primer parámetro el emit y el segundo son los datos
             //cada que u usuario se conecta, a todos los clientes conectados les llega el emtit y es escuchado por todos los clientes conectados 
-            this.io.emit('nuevo_user', {user: datos.usuario});
+            this.io.emit('nuevo_user', {user: this.usersArray});
             });
 
             //escuchando cuando el usuario manda mensaje
@@ -34,7 +36,7 @@ class Sockets {
             //escuchando cuando el usuario manda un video ID
             client.on('envioVideoId', datos => {
             console.log(datos.videoId+ ' esta enviando un video Id');
-            this.io.emit('nuevoVideoId', {videoId: datos.videoId});
+            this.io.emit('nuevoVideoId', {videoId: datos.videoId, title: datos.title});
             });
             
             //escucha eventos de control de video [pause-play]
